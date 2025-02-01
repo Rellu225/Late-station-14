@@ -13,3 +13,9 @@ Entries:
     changes:
       - type: Add
         message: Ported over the markings from the Impstation repo check the pull request above for more details.
+  - id: 4
+    author: ReboundQ3
+    time: "2025-02-1T12:43:00.0000000+00:00"
+    changes:
+      - type: Add
+        message: Felinids have migrated from Frontier Sector To Late Sector! (Felinid's have been added).
