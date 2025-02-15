@@ -54,24 +54,12 @@
       collection: HarpyCaws
     Chirp:
       collection: HarpyChirps
-    # Snarl:
-    #   collection: VulpkaninSnarls
-    # Bark:
-    #   collection: VulpkaninBarks
-    # Whine:
-    #   collection: VulpkaninWhines
-    # Howl:
-    #   collection: VulpkaninHowls
-    # Awoo:
-    #   collection: VulpkaninHowls
     Honk:
       collection: HarpyHonks
       params: # Frontier
         volume: -5 # Frontier
     Weh:
       collection: Weh
-    # Belch: # Frontier
-    #   collection: Belch # Frontier
     Gasp: # Frontier
       collection: HarpyGasp # Frontier
     DefaultDeathgasp: # Frontier

@@ -92,12 +92,6 @@
   files:
     - /Audio/_LateStation/Voice/Felinid/cat_growl1.ogg
     - /Audio/Animals/bear.ogg
-    - /Audio/_DeltaV/Voice/Vulpkanin/dog_growl1.ogg
-    - /Audio/_DeltaV/Voice/Vulpkanin/dog_growl2.ogg
-    - /Audio/_DeltaV/Voice/Vulpkanin/dog_growl3.ogg
-    - /Audio/_DeltaV/Voice/Vulpkanin/dog_growl4.ogg
-    - /Audio/_DeltaV/Voice/Vulpkanin/dog_growl5.ogg
-    - /Audio/_DeltaV/Voice/Vulpkanin/dog_growl6.ogg
 
 - type: soundCollection
   id: HarpyPurrs

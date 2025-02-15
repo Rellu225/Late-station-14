@@ -135,13 +135,7 @@
     - Beep # Frontier
     - Squeak # Frontier
     - Chirp # Frontier
-    - Snarl # Frontier
-    - Bark # Frontier
-    - Whine # Frontier
-    - Howl # Frontier
-    - Awoo # Frontier
     - Honk # Frontier
-    - Belch # Frontier
     # End of modified code
   - type: Vocal
     sounds:
