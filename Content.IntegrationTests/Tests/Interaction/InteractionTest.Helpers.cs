@@ -28,50 +28,29 @@ namespace Content.IntegrationTests.Tests.Interaction;
 // This partial class defines various methods that are useful for performing & validating interactions
 public abstract partial class InteractionTest
 {
-    // ... (other methods remain unchanged)
-
     /// <summary>
-    /// Set the tile at the target position to some prototype.
+    /// Begin constructing an entity.
     /// </summary>
-    protected async Task SetTile(string? proto, NetCoordinates? coords = null, Entity<MapGridComponent>? grid = null)
+    protected async Task StartConstruction(string prototype, bool shouldSucceed = true)
     {
-        var tile = proto == null
-            ? Tile.Empty
-            : new Tile(TileMan[proto].TileId);
+        var proto = ProtoMan.Index<ConstructionPrototype>(prototype);
+        Assert.That(proto.Type, Is.EqualTo(ConstructionType.Structure));
 
-        var pos = Transform.ToMapCoordinates(SEntMan.GetCoordinates(coords ?? TargetCoords));
-
-        EntityUid gridUid;
-        MapGridComponent? gridComp;
-        await Server.WaitPost(() =>
+        await Client.WaitPost(() =>
         {
-            if (grid is { } gridEnt)
-            {
-                MapSystem.SetTile(gridEnt, SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
-                return;
-            }
-            else if (MapMan.TryFindGridAt(pos, out var gUid, out var gComp))
-            {
-                MapSystem.SetTile(gUid, gComp, SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
-                return;
-            }
+            Assert.That(CConSys.TrySpawnGhost(proto, CEntMan.GetCoordinates(TargetCoords), Direction.South, out var clientTarget),
+                Is.EqualTo(shouldSucceed));
 
-            if (proto == null)
+            if (!shouldSucceed)
                 return;
 
-            // Create a new grid
-            gridEnt = MapMan.CreateGridEntity(MapData.MapId);
-            grid = gridEnt;
-            gridUid = gridEnt;
-            gridComp = gridEnt.Comp;
-            // Use the overload that takes the entity directly.
-            Transform.SetWorldPosition(gridEnt, pos.Position);
-            MapSystem.SetTile((gridUid, gridComp), SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
-
-            if (!MapMan.TryFindGridAt(pos, out _, out _))
-                Assert.Fail("Failed to create grid?");
+            var comp = CEntMan.GetComponent<ConstructionGhostComponent>(clientTarget!.Value);
+            Target = CEntMan.GetNetEntity(clientTarget.Value);
+            Assert.That(Target.Value.IsClientSide());
+            ConstructionGhostId = clientTarget.Value.GetHashCode();
         });
-        await AssertTile(proto, coords);
+
+        await RunTicks(1);
     }
 
     /// <summary>
@@ -804,12 +783,13 @@ public abstract partial class InteractionTest
             if (proto == null)
                 return;
 
+            // Create a new grid
             gridEnt = MapMan.CreateGridEntity(MapData.MapId);
             grid = gridEnt;
             gridUid = gridEnt;
             gridComp = gridEnt.Comp;
-            var gridXform = SEntMan.GetComponent<TransformComponent>(gridUid);
-            Transform.SetWorldPosition(gridXform, pos.Position);
+            // Use the overload that takes the entity directly.
+            Transform.SetWorldPosition(gridEnt, pos.Position);
             MapSystem.SetTile((gridUid, gridComp), SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
 
             if (!MapMan.TryFindGridAt(pos, out _, out _))
@@ -1201,8 +1181,6 @@ public abstract partial class InteractionTest
     #endregion
 
     #region Inputs
-
-
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.
