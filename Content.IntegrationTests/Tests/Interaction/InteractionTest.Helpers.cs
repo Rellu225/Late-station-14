@@ -783,12 +783,13 @@ public abstract partial class InteractionTest
             if (proto == null)
                 return;
 
-            gridEnt = MapMan.CreateGridEntity(MapData.MapId);
-            grid = gridEnt;
-            gridUid = gridEnt;
-            gridComp = gridEnt.Comp;
-            var gridXform = SEntMan.GetComponent<TransformComponent>(gridUid);
-            Transform.SetWorldPosition(gridXform, pos.Position);
+            // Create a new grid
+            var newGrid = MapMan.CreateGridEntity(MapData.MapId);
+            grid = newGrid;
+            gridUid = newGrid;
+            gridComp = newGrid.Comp;
+            // Use the new overload that takes the entity instead of its TransformComponent.
+            Transform.SetWorldPosition(newGrid, pos.Position);
             MapSystem.SetTile((gridUid, gridComp), SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
 
             if (!MapMan.TryFindGridAt(pos, out _, out _))
@@ -1180,8 +1181,6 @@ public abstract partial class InteractionTest
     #endregion
 
     #region Inputs
-
-
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.
