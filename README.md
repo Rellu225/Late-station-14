@@ -1,4 +1,4 @@
-<p align="center"> <img alt="LateStation" src="https://raw.githubusercontent.com/ReboundQ3/Late-station-14/refs/heads/master/Resources/Textures/Logo/logo.png" /></p>
+<p align="center"> <img alt="LateStation" src="https://raw.githubusercontent.com/LateStation14/Late-station-14/refs/heads/master/Resources/Textures/Logo/logo.png" /></p>
 
 LateStation is a fork of [Harmony](https://github.com/ss14-harmony/ss14-harmony). We aim to make our own station with our own content using Harmony as a base since most of our (now) playerbase come from Harmony.
 Right now there isn't much different from the Harmony fork but that will change in the future, there might be some remnants still but thats WIP.
