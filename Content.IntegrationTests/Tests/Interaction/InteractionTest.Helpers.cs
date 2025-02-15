@@ -28,29 +28,50 @@ namespace Content.IntegrationTests.Tests.Interaction;
 // This partial class defines various methods that are useful for performing & validating interactions
 public abstract partial class InteractionTest
 {
+    // ... (other methods remain unchanged)
+
     /// <summary>
-    /// Begin constructing an entity.
+    /// Set the tile at the target position to some prototype.
     /// </summary>
-    protected async Task StartConstruction(string prototype, bool shouldSucceed = true)
+    protected async Task SetTile(string? proto, NetCoordinates? coords = null, Entity<MapGridComponent>? grid = null)
     {
-        var proto = ProtoMan.Index<ConstructionPrototype>(prototype);
-        Assert.That(proto.Type, Is.EqualTo(ConstructionType.Structure));
+        var tile = proto == null
+            ? Tile.Empty
+            : new Tile(TileMan[proto].TileId);
 
-        await Client.WaitPost(() =>
+        var pos = Transform.ToMapCoordinates(SEntMan.GetCoordinates(coords ?? TargetCoords));
+
+        EntityUid gridUid;
+        MapGridComponent? gridComp;
+        await Server.WaitPost(() =>
         {
-            Assert.That(CConSys.TrySpawnGhost(proto, CEntMan.GetCoordinates(TargetCoords), Direction.South, out var clientTarget),
-                Is.EqualTo(shouldSucceed));
+            if (grid is { } gridEnt)
+            {
+                MapSystem.SetTile(gridEnt, SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
+                return;
+            }
+            else if (MapMan.TryFindGridAt(pos, out var gUid, out var gComp))
+            {
+                MapSystem.SetTile(gUid, gComp, SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
+                return;
+            }
 
-            if (!shouldSucceed)
+            if (proto == null)
                 return;
 
-            var comp = CEntMan.GetComponent<ConstructionGhostComponent>(clientTarget!.Value);
-            Target = CEntMan.GetNetEntity(clientTarget.Value);
-            Assert.That(Target.Value.IsClientSide());
-            ConstructionGhostId = clientTarget.Value.GetHashCode();
-        });
+            // Create a new grid
+            gridEnt = MapMan.CreateGridEntity(MapData.MapId);
+            grid = gridEnt;
+            gridUid = gridEnt;
+            gridComp = gridEnt.Comp;
+            // Use the overload that takes the entity directly.
+            Transform.SetWorldPosition(gridEnt, pos.Position);
+            MapSystem.SetTile((gridUid, gridComp), SEntMan.GetCoordinates(coords ?? TargetCoords), tile);
 
-        await RunTicks(1);
+            if (!MapMan.TryFindGridAt(pos, out _, out _))
+                Assert.Fail("Failed to create grid?");
+        });
+        await AssertTile(proto, coords);
     }
 
     /// <summary>
