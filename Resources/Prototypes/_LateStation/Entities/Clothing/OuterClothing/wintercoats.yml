@@ -1,0 +1,19 @@
+- type: entity
+  parent: ClothingOuterWinterCoatToggleable
+  id: ClothingOuterIrisCoat
+  name: yellow down winter coat
+  description: A replica of a handmade coat spun by a caring wife. The lining is exquistely soft.
+  components:
+  - type: Sprite
+    sprite: _LateStation/Clothing/OuterClothing/WinterCoats/iriscoat.rsi
+  - type: Clothing
+    sprite: _LateStation/Clothing/OuterClothing/WinterCoats/iriscoat.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Slash: 0.95
+        Heat: 0.90
+        Caustic: 0.90
+    priceMultiplier: 0.15
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHatHoodIrisCoat
