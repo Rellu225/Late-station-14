@@ -15,8 +15,8 @@ RELEASE_DIR = "release"
 # CONFIGURATION PARAMETERS
 # Forks should change these to publish to their own infrastructure.
 #
-ROBUST_CDN_URL = "http://cdn.harmony14.com/"
-FORK_ID = "harmony"
+ROBUST_CDN_URL = "https://upload.latestation14.space/"
+FORK_ID = "latestation"
 
 def main():
     parser = argparse.ArgumentParser()
