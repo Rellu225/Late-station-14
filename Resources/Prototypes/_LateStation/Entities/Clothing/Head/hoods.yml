@@ -1,0 +1,10 @@
+- type: entity
+  parent: ClothingHeadHatHoodWinterBase
+  id: ClothingHeadHatHoodIrisCoat
+  categories: [ HideSpawnMenu ]
+  name: yellow down winter coat hood
+  components:
+  - type: Sprite
+    sprite: _LateStation/Clothing/Head/Hoods/Coat/hoodiriscoat.rsi
+  - type: Clothing
+    sprite: _LateStation/Clothing/Head/Hoods/Coat/hoodiriscoat.rsi
