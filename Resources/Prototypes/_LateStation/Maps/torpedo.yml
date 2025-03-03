@@ -1,7 +1,7 @@
 - type: gameMap
   id: Torpedo
   mapName: 'Torpedo'
-  mapPath: /Maps/_Latestation/torpedo.yml
+  mapPath: /Maps/_LateStation/torpedo.yml
   minPlayers: 3
   maxPlayers: 20
   stations:
