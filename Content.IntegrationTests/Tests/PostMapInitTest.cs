@@ -52,7 +52,7 @@ namespace Content.IntegrationTests.Tests
             "Aspid", // Harmony, playtest for upstream by Golinth
             "Atlas", // Harmony revived by Kravin
             "Mira", // Harmony, developed by tanuko
-            "Torpedo" // LateStation, developed by Rellu
+            "Torpedo", // LateStation, developed by Rellu
             "Dev",
             "TestTeg",
             "Fland",
