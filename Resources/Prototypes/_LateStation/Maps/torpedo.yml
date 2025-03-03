@@ -19,31 +19,31 @@
           path: /Maps/Shuttles/cargo.yml
         - type: StationJobs
           availableJobs:
-            #service
-            Bartender: [ 1, 1 ]
-            Botanist: [ 2, 2]
-            Chef: [ 1, 1 ]
-            Janitor: [ 1, 1 ]
-            Captain: [ 1, 1 ]
-            HeadOfPersonnel: [ 1, 1 ]
-            ServiceWorker: [ 2, 2 ]
-            #engineering
-            StationEngineer: [ 2, 2 ]
-            AtmosphericTechnician: [ 1, 1 ]
-            #medical
-            MedicalDoctor: [ 2, 2 ]
-            Chemist: [ 1, 1 ]
-            #science
-            Scientist: [ 2, 2 ]
-            #security
-            HeadOfSecurity: [ 1, 1 ]
-            SecurityOfficer: [ 3, 3 ]
-            Warden: [ 1, 1 ]
-            #supply
-            CargoTechnician: [ 2, 2 ]
-            SalvageSpecialist: [ 2, 2 ]
-            #civilian
-            Passenger: [ -1, -1 ]
-            Musician: [ 1, 1 ]
+            # service
+            Bartender: [1, 1]
+            Botanist: [2, 2]
+            Chef: [1, 1]
+            Janitor: [1, 1]
+            Captain: [1, 1]
+            HeadOfPersonnel: [1, 1]
+            ServiceWorker: [2, 2]
+            # engineering
+            StationEngineer: [2, 2]
+            AtmosphericTechnician: [1, 1]
+            # medical
+            MedicalDoctor: [2, 2]
+            Chemist: [1, 1]
+            # science
+            Scientist: [2, 2]
+            # security
+            HeadOfSecurity: [1, 1]
+            SecurityOfficer: [3, 3]
+            Warden: [1, 1]
+            # supply
+            CargoTechnician: [2, 2]
+            SalvageSpecialist: [2, 2]
+            # civilian
+            Passenger: [-1, -1]
+            Musician: [1, 1]
             # silicon
-            Borg: [ 1, 1 ]
+            Borg: [1, 1]
