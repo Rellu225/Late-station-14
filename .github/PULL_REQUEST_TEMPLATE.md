@@ -1,4 +1,4 @@
-<!-- If you are new to the Harmony repository, please read the [Contributing Guidelines](https://github.com/ss14-harmony/ss14-harmony/blob/master/CONTRIBUTING.md) -->
+<!-- If you are new to the LateStation repository, please read the [Contributing Guidelines](https://github.com/ss14-harmony/ss14-harmony/blob/master/CONTRIBUTING.md) -->
 ## About the PR
 <!-- What did you change? -->
 
