@@ -34,7 +34,6 @@ entities:
       name: VLD Torpedo TC-225
     - type: Transform
       pos: -0.40625,0.24343288
-      parent: invalid
     - type: MapGrid
       chunks:
         0,0:
