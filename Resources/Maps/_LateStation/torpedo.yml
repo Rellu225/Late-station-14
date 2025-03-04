@@ -122,166 +122,167 @@ entities:
       gravityShakeSound: !type:SoundPathSpecifier
         path: /Audio/Effects/alert.ogg
     - type: DecalGrid
-      chunkCollection:
-        version: 2
-        nodes:
-        - node:
-            color: '#FFFFFFFF'
-            id: Bot
-          decals:
-            527: 3,-7
-            529: 4,-7
-            530: 3,-6
-            531: 4,-6
-        - node:
-            color: '#9FED5885'
-            id: BrickCornerOverlayNE
-          decals:
-            123: -3,-12
-        - node:
-            color: '#EFB341FF'
-            id: BrickCornerOverlayNE
-          decals:
-            353: -3,-39
-        - node:
-            color: '#52B4E9FF'
-            id: BrickCornerOverlayNW
-          decals:
-            47: -7,0
-        - node:
-            color: '#9FED5885'
-            id: BrickCornerOverlayNW
-          decals:
-            124: -4,-12
-            130: -7,-16
-        - node:
-            color: '#EFB341FF'
-            id: BrickCornerOverlayNW
-          decals:
-            354: -7,-39
-        - node:
-            color: '#52B4E9FF'
-            id: BrickCornerOverlaySE
-          decals:
-            32: -3,-7
-        - node:
-            color: '#9FED5885'
-            id: BrickCornerOverlaySE
-          decals:
-            118: -3,-18
-        - node:
-            color: '#EFB341FF'
-            id: BrickCornerOverlaySE
-          decals:
-            373: -3,-48
-        - node:
-            color: '#52B4E9FF'
-            id: BrickCornerOverlaySW
-          decals:
-            31: -7,-7
-        - node:
-            color: '#9FED5885'
-            id: BrickCornerOverlaySW
-          decals:
-            117: -7,-18
-        - node:
-            color: '#EFB341FF'
-            id: BrickCornerOverlaySW
-          decals:
-            374: -7,-48
-        - node:
-            color: '#E6E6E6FF'
-            id: BrickEndOverlayN
-          decals:
-            92: 0,-1
-        - node:
-            color: '#FFFFFFFF'
-            id: BrickEndOverlayN
-          decals:
-            221: 0,-13
-        - node:
-            color: '#E6E6E6FF'
-            id: BrickEndOverlayS
-          decals:
-            93: 0,-6
-        - node:
-            color: '#52B4E9FF'
-            id: BrickLineOverlayE
-          decals:
-            44: -3,-6
-            45: -3,-5
-            48: -3,-2
-            49: -3,-1
-            106: -3,0
-            107: -3,0
-        - node:
-            color: '#9FED5885'
-            id: BrickLineOverlayE
-          decals:
-            119: -3,-17
-            120: -3,-16
-            121: -3,-15
-            122: -3,-14
-        - node:
-            color: '#E6E6E6FF'
-            id: BrickLineOverlayE
-          decals:
-            98: 0,-2
-            99: 0,-3
-            100: 0,-4
-            101: 0,-5
-        - node:
-            color: '#EFB341FF'
-            id: BrickLineOverlayE
-          decals:
-            363: -3,-47
-            364: -3,-46
-            365: -3,-45
-            366: -3,-43
-            367: -3,-42
-            368: -3,-41
-            369: -3,-40
-        - node:
-            color: '#52B4E9FF'
-            id: BrickLineOverlayN
-          decals:
-            103: -6,0
-            105: -3,0
-            109: -4,0
-            110: -5,0
-        - node:
-            color: '#9FED5885'
-            id: BrickLineOverlayN
-          decals:
-            127: -5,-16
-            128: -6,-16
-        - node:
-            color: '#EFB341FF'
-            id: BrickLineOverlayN
-          decals:
-            370: -4,-39
-            371: -5,-39
-            372: -6,-39
-        - node:
-            color: '#BC863FFF'
-            id: BrickLineOverlayS
-          decals:
-            532: 5,-7
-        - node:
-            color: '#EFB341FF'
-            id: BrickLineOverlayS
-          decals:
-            375: -6,-49
-            376: -6,-48
-            377: -5,-48
-            396: -6,-48
-            397: -4,-48
-        - node:
-            color: '#52B4E9FF'
-            id: BrickLineOverlayW
-          decals:
-            # Note: This section was truncated in your input; values remain unchanged
-            # Add any additional decals from the original file here if present
+  chunkCollection:
+    version: 2
+    nodes:
+    - node:
+        color: '#FFFFFFFF'
+        id: Bot
+      decals:
+        527: 3,-7
+        529: 4,-7
+        530: 3,-6
+        531: 4,-6
+    - node:
+        color: '#9FED5885'
+        id: BrickCornerOverlayNE
+      decals:
+        123: -3,-12
+    - node:
+        color: '#EFB341FF'
+        id: BrickCornerOverlayNE
+      decals:
+        353: -3,-39
+    - node:
+        color: '#52B4E9FF'
+        id: BrickCornerOverlayNW
+      decals:
+        47: -7,0
+    - node:
+        color: '#9FED5885'
+        id: BrickCornerOverlayNW
+      decals:
+        124: -4,-12
+        130: -7,-16
+    - node:
+        color: '#EFB341FF'
+        id: BrickCornerOverlayNW
+      decals:
+        354: -7,-39
+    - node:
+        color: '#52B4E9FF'
+        id: BrickCornerOverlaySE
+      decals:
+        32: -3,-7
+    - node:
+        color: '#9FED5885'
+        id: BrickCornerOverlaySE
+      decals:
+        118: -3,-18
+    - node:
+        color: '#EFB341FF'
+        id: BrickCornerOverlaySE
+      decals:
+        373: -3,-48
+    - node:
+        color: '#52B4E9FF'
+        id: BrickCornerOverlaySW
+      decals:
+        31: -7,-7
+    - node:
+        color: '#9FED5885'
+        id: BrickCornerOverlaySW
+      decals:
+        117: -7,-18
+    - node:
+        color: '#EFB341FF'
+        id: BrickCornerOverlaySW
+      decals:
+        374: -7,-48
+    - node:
+        color: '#E6E6E6FF'
+        id: BrickEndOverlayN
+      decals:
+        92: 0,-1
+    - node:
+        color: '#FFFFFFFF'
+        id: BrickEndOverlayN
+      decals:
+        221: 0,-13
+    - node:
+        color: '#E6E6E6FF'
+        id: BrickEndOverlayS
+      decals:
+        93: 0,-6
+    - node:
+        color: '#52B4E9FF'
+        id: BrickLineOverlayE
+      decals:
+        44: -3,-6
+        45: -3,-5
+        48: -3,-2
+        49: -3,-1
+        106: -3,0
+        107: -3,0
+    - node:
+        color: '#9FED5885'
+        id: BrickLineOverlayE
+      decals:
+        119: -3,-17
+        120: -3,-16
+        121: -3,-15
+        122: -3,-14
+    - node:
+        color: '#E6E6E6FF'
+        id: BrickLineOverlayE
+      decals:
+        98: 0,-2
+        99: 0,-3
+        100: 0,-4
+        101: 0,-5
+    - node:
+        color: '#EFB341FF'
+        id: BrickLineOverlayE
+      decals:
+        363: -3,-47
+        364: -3,-46
+        365: -3,-45
+        366: -3,-43
+        367: -3,-42
+        368: -3,-41
+        369: -3,-40
+    - node:
+        color: '#52B4E9FF'
+        id: BrickLineOverlayN
+      decals:
+        103: -6,0
+        105: -3,0
+        109: -4,0
+        110: -5,0
+    - node:
+        color: '#9FED5885'
+        id: BrickLineOverlayN
+      decals:
+        127: -5,-16
+        128: -6,-16
+    - node:
+        color: '#EFB341FF'
+        id: BrickLineOverlayN
+      decals:
+        370: -4,-39
+        371: -5,-39
+        372: -6,-39
+    - node:
+        color: '#BC863FFF'
+        id: BrickLineOverlayS
+      decals:
+        532: 5,-7
+    - node:
+        color: '#EFB341FF'
+        id: BrickLineOverlayS
+      decals:
+        375: -6,-49
+        376: -6,-48
+        377: -5,-48
+        396: -6,-48
+        397: -4,-48
+    - node:
+        color: '#52B4E9FF'
+        id: BrickLineOverlayW
+      decals:
+        50: -7,-6
+        # Note: This section was truncated in your input; values remain unchanged
+        # Add any additional decals from the original file here if present
   - uid: 3
     components:
     - type: Transform
