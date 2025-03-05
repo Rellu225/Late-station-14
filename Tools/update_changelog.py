@@ -1,108 +1,108 @@
-#!/usr/bin/env python3
-
-import sys
 import os
-from typing import List, Any
+import requests
 import yaml
-import argparse
-import datetime
+import re
+from datetime import datetime
 
-MAX_ENTRIES = 500
+# GitHub API setup
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
+REPO = os.environ.get("GITHUB_REPOSITORY", "LateStation14/Late-station-14")
+HEADERS = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
+CHANGELOG_PATH = "resources/changelog/LateStation.yml"
 
-HEADER_RE = r"(?::cl:|🆑) *\r?\n(.+)$"
-ENTRY_RE = r"^ *[*-]? *(\S[^\n\r]+)\r?$"
+def get_merged_prs(since_time=None):
+    """Fetch merged PRs since the last run."""
+    url = f"https://api.github.com/repos/{REPO}/pulls?state=closed&sort=updated&direction=desc"
+    response = requests.get(url, headers=HEADERS)
+    response.raise_for_status()
+    prs = response.json()
 
-CATEGORY_MAIN = "Main"
+    # Filter for merged PRs
+    merged_prs = [pr for pr in prs if pr["merged_at"] is not None]
+    if since_time:
+        merged_prs = [pr for pr in merged_prs if pr["merged_at"] > since_time]
+    return merged_prs
 
-# From https://stackoverflow.com/a/37958106/4678631
-class NoDatesSafeLoader(yaml.SafeLoader):
-    @classmethod
-    def remove_implicit_resolver(cls, tag_to_remove):
-        if not 'yaml_implicit_resolvers' in cls.__dict__:
-            cls.yaml_implicit_resolvers = cls.yaml_implicit_resolvers.copy()
+def parse_changelog(pr_body):
+    """Parse the Changelog section from the PR body."""
+    if not pr_body:
+        return []
 
-        for first_letter, mappings in cls.yaml_implicit_resolvers.items():
-            cls.yaml_implicit_resolvers[first_letter] = [(tag, regexp)
-                                                         for tag, regexp in mappings
-                                                         if tag != tag_to_remove]
+    # Find the Changelog section after :cl:
+    changelog_match = re.search(r":cl:.*?(?=(?:\n\n|\Z))", pr_body, re.DOTALL)
+    if not changelog_match:
+        return []
 
-# Hrm yes let's make the fucking default of our serialization library to PARSE ISO-8601
-# but then output garbage when re-serializing.
-NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
+    changelog_text = changelog_match.group(0)
+    changes = []
+
+    # Match lines like "- add: message", "- fix: message", etc.
+    for line in changelog_text.splitlines():
+        line = line.strip()
+        match = re.match(r"-\s*(add|remove|tweak|fix):\s*(.+)", line, re.IGNORECASE)
+        if match:
+            change_type, message = match.groups()
+            changes.append({
+                "type": change_type.capitalize(),  # Match your YAML schema (Fix, Add, etc.)
+                "message": message.strip()
+            })
+
+    return changes
+
+def load_changelog():
+    """Load the existing changelog YAML."""
+    with open(CHANGELOG_PATH, "r") as f:
+        return yaml.safe_load(f)
+
+def save_changelog(data):
+    """Save the updated changelog YAML."""
+    with open(CHANGELOG_PATH, "w") as f:
+        yaml.safe_dump(data, f, default_flow_style=False, sort_keys=False)
+
+def get_next_id(entries):
+    """Get the next available ID."""
+    if not entries:
+        return 1
+    return max(entry["id"] for entry in entries) + 1
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("changelog_file")
-    parser.add_argument("parts_dir")
-    parser.add_argument("--category", default=CATEGORY_MAIN)
+    # Load existing changelog
+    changelog = load_changelog()
+    entries = changelog.get("Entries", [])
 
-    args = parser.parse_args()
+    # Get the latest entry time to fetch PRs since then
+    last_time = max((entry["time"] for entry in entries), default=None) if entries else None
 
-    category = args.category
+    # Fetch merged PRs
+    prs = get_merged_prs(since_time=last_time)
+    if not prs:
+        print("No new merged PRs found.")
+        return
 
-    with open(args.changelog_file, "r", encoding="utf-8-sig") as f:
-        current_data = yaml.load(f, Loader=NoDatesSafeLoader)
+    next_id = get_next_id(entries)
 
-    entries_list: List[Any]
-    if current_data is None:
-        entries_list = []
-    else:
-        entries_list = current_data["Entries"]
-
-    max_id = max(map(lambda e: e["id"], entries_list), default=0)
-
-    for partname in os.listdir(args.parts_dir):
-        if not partname.endswith(".yml"):
+    # Process each PR
+    for pr in prs:
+        changes = parse_changelog(pr["body"])
+        if not changes:
+            print(f"Skipping PR #{pr['number']}: No valid changelog found.")
             continue
 
-        partpath = os.path.join(args.parts_dir, partname)
-        print(partpath)
+        entry = {
+            "id": next_id,
+            "author": pr["user"]["login"],
+            "time": pr["merged_at"],  # ISO format with UTC
+            "url": pr["html_url"],
+            "changes": changes
+        }
+        entries.append(entry)
+        next_id += 1
+        print(f"Added entry for PR #{pr['number']} by {pr['user']['login']}")
 
-        with open(partpath, "r", encoding="utf-8-sig") as f:
-            partyaml = yaml.load(f, Loader=NoDatesSafeLoader)
+    # Update changelog
+    changelog["Entries"] = entries
+    save_changelog(changelog)
+    print(f"Updated changelog with {len(prs)} new entries.")
 
-        part_category = partyaml.get("category", CATEGORY_MAIN)
-        if part_category != category:
-            print(f"Skipping: wrong category ({part_category} vs {category})")
-            continue
-
-        author = partyaml["author"]
-        time = partyaml.get(
-            "time", datetime.datetime.now(datetime.timezone.utc).isoformat()
-        )
-        changes = partyaml["changes"]
-        url = partyaml.get("url")
-
-        if not isinstance(changes, list):
-            changes = [changes]
-
-        if len(changes):
-            # Don't add empty changelog entries...
-            max_id += 1
-            new_id = max_id
-
-            entries_list.append(
-                {"author": author, "time": time, "changes": changes, "id": new_id, "url": url}
-            )
-
-        os.remove(partpath)
-
-    print(f"Have {len(entries_list)} changelog entries")
-
-    entries_list.sort(key=lambda e: e["id"])
-
-    overflow = len(entries_list) - MAX_ENTRIES
-    if overflow > 0:
-        print(f"Removing {overflow} old entries.")
-        entries_list = entries_list[overflow:]
-
-    new_data = {"Entries": entries_list}
-    for key, value in current_data.items():
-        if key != "Entries":
-            new_data[key] = value
-
-    with open(args.changelog_file, "w", encoding="utf-8-sig") as f:
-        yaml.safe_dump(new_data, f)
-
-
-main()
+if __name__ == "__main__":
+    main()
