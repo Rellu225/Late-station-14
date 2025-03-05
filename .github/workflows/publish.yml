@@ -23,19 +23,28 @@ jobs:
     - name: Update Changelog YAML
       run: python3 Tools/update_changelog.py
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Still use GITHUB_TOKEN for API calls
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Commit Changelog Changes
       run: |
         git config --global user.name "Weh Bot"
         git config --global user.email "weh-bot@noreply.github.com"
+        
+        # Set the remote URL with PAT for authentication
+        git remote set-url origin https://x-access-token:${{ secrets.WEH_BOT_PAT }}@github.com/LateStation14/Late-station-14.git
+        
+        # Fetch and pull the latest changes from master
+        git fetch origin
+        git pull origin master --rebase
+        
+        # Add and commit the updated changelog
         git add Resources/Changelog/LateStation.yml
         git commit -m "Auto-update changelog [skip ci]" || echo "No changes to commit"
-        # Configure git to use the PAT for authentication
-        git remote set-url origin https://x-access-token:${{ secrets.WEH_BOT_PAT }}@github.com/LateStation14/Late-station-14.git
-        git push
+        
+        # Push to master
+        git push origin master
       env:
-        WEH_BOT_PAT: ${{ secrets.WEH_BOT_PAT }}  # Pass the PAT as an environment variable
+        WEH_BOT_PAT: ${{ secrets.WEH_BOT_PAT }}
 
     - name: Install dependencies
       run: sudo apt-get install -y python3-paramiko python3-lxml
@@ -79,11 +88,11 @@ jobs:
         ARTIFACT_ID: ${{ steps.artifact-upload-step.outputs.artifact-id }}
         GITHUB_REPOSITORY: ${{ vars.GITHUB_REPOSITORY }}
 
-#    - name: Publish changelog (Discord)
-#     run: Tools/actions_changelogs_since_last_run.py
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        DISCORD_WEBHOOK_URL: ${{ secrets.CHANGELOG_DISCORD_WEBHOOK }}
+    - name: Publish changelog (Discord)
+      run: Tools/actions_changelogs_since_last_run.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DISCORD_WEBHOOK_URL: ${{ secrets.CHANGELOG_DISCORD_WEBHOOK }}
 
 #    - name: Publish changelog (RSS)
 #      run: Tools/actions_changelog_rss.py
