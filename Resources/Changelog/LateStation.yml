@@ -27,8 +27,6 @@ Entries:
   url: https://github.com/LateStation14/Late-station-14/pull/5
   changes:
   - type: Fix
-    message: Fixed Torpedo and is now ready for commisioning
-  - type: Fix
     message: Fixed Torpedo and is now ready for commissioning
 - id: 6
   author: Rellu225
@@ -42,13 +40,5 @@ Entries:
   time: '2025-02-28T09:11:30Z'
   url: https://github.com/LateStation14/Late-station-14/pull/3
   changes:
-  - type: Add
-    message: Added fun!
-  - type: Remove
-    message: Removed fun!
-  - type: Tweak
-    message: Changed fun!
-  - type: Fix
-    message: Fixed fun!
   - type: Add
     message: Added a new coat, acquired from a hacked medidrobe
