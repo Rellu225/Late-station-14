@@ -35,4 +35,4 @@ IMPORTANT: The automated changelog bot (Weh Bot) only reads entries AFTER the ':
 - add: Added a new weapon.
 - fix: Fixed a bug with the HUD.
 - remove: Removed the Maints Slasher
-- Tweaked the AI to teleport bread
+- Tweak: tweaked the AI to teleport bread
