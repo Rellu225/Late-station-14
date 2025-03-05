@@ -8,7 +8,7 @@ from datetime import datetime
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 REPO = os.environ.get("GITHUB_REPOSITORY", "LateStation14/Late-station-14")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
-CHANGELOG_PATH = "resources/changelog/LateStation.yml"
+CHANGELOG_PATH = "Resources/Changelog/LateStation.yml"  # Updated to match exact case
 
 def get_merged_prs(since_time=None):
     """Fetch merged PRs since the last run."""
@@ -50,7 +50,15 @@ def parse_changelog(pr_body):
     return changes
 
 def load_changelog():
-    """Load the existing changelog YAML."""
+    """Load the existing changelog YAML or create it if it doesn't exist."""
+    if not os.path.exists(CHANGELOG_PATH):
+        # Create the directory if it doesn't exist
+        os.makedirs(os.path.dirname(CHANGELOG_PATH), exist_ok=True)
+        # Create an empty changelog structure
+        default_changelog = {"Entries": []}
+        with open(CHANGELOG_PATH, "w") as f:
+            yaml.safe_dump(default_changelog, f, default_flow_style=False, sort_keys=False)
+        return default_changelog
     with open(CHANGELOG_PATH, "r") as f:
         return yaml.safe_load(f)
 
@@ -66,7 +74,7 @@ def get_next_id(entries):
     return max(entry["id"] for entry in entries) + 1
 
 def main():
-    # Load existing changelog
+    # Load existing changelog (or create it)
     changelog = load_changelog()
     entries = changelog.get("Entries", [])
 

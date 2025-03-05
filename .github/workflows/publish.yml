@@ -13,12 +13,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install dependencies
-      run: sudo apt-get install -y python3-paramiko python3-lxml
-
     - uses: actions/checkout@v3.6.0
       with:
         submodules: 'recursive'
+
+    - name: Install Python dependencies
+      run: pip3 install requests pyyaml
+
+    - name: Update Changelog YAML
+      run: python3 Tools/update_changelog.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Commit Changelog Changes
+      run: |
+        git config --global user.name "Weh Bot"
+        git config --global user.email "weh-bot@noreply.github.com"
+        git add Resources/Changelog/LateStation.yml  # Updated path case
+        git commit -m "Auto-update changelog [skip ci]" || echo "No changes to commit"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install dependencies
+      run: sudo apt-get install -y python3-paramiko python3-lxml
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3.2.0
@@ -59,38 +77,16 @@ jobs:
         ARTIFACT_ID: ${{ steps.artifact-upload-step.outputs.artifact-id }}
         GITHUB_REPOSITORY: ${{ vars.GITHUB_REPOSITORY }}
 
-#    - name: Publish changelog (Discord)
-#      run: Tools/actions_changelogs_since_last_run.py
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        DISCORD_WEBHOOK_URL: ${{ secrets.CHANGELOG_DISCORD_WEBHOOK }}
+    - name: Publish changelog (Discord)
+      run: Tools/actions_changelogs_since_last_run.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DISCORD_WEBHOOK_URL: ${{ secrets.CHANGELOG_DISCORD_WEBHOOK }}
 
 #    - name: Publish changelog (RSS)
 #      run: Tools/actions_changelog_rss.py
 #      env:
 #        CHANGELOG_RSS_KEY: ${{ secrets.CHANGELOG_RSS_KEY }}
-
-# LateStation edited code start
-
-    - name: Install Python dependencies
-      run: pip3 install requests pyyaml
-
-    - name: Update Changelog YAML
-      run: python3 Tools/update_changelog.py
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Commit Changelog Changes
-      run: |
-        git config --global user.name "Weh Bot"
-        git config --global user.email "weh-bot@noreply.github.com"
-        git add resources/changelog/LateStation.yml
-        git commit -m "Auto-update changelog [skip ci]" || echo "No changes to commit"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-# LateStation edited code end
 
     - uses: geekyeggo/delete-artifact@v5
       if: always()
